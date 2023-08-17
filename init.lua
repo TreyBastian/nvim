@@ -50,7 +50,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-{
+  {
     "nvim-telescope/telescope.nvim",
     tag = "0.1.1",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -69,7 +69,7 @@ require("lazy").setup({
     lazy = false,
     priority = 1000,
     config = function()
-            vim.cmd[[colorscheme moonfly]]
+      vim.cmd [[colorscheme moonfly]]
     end
   },
   {
@@ -77,23 +77,6 @@ require("lazy").setup({
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup {
-        ensure_installed = {
-          "lua",
-          "vim",
-          "vimdoc",
-          "css",
-          "sql",
-          "bash",
-          "dockerfile",
-          "html",
-          "javascript",
-          "typescript",
-          "toml",
-          "yaml",
-          "json",
-          "tsx",
-          "rust",
-        },
         sync_install = false,
         auto_install = true,
         highlight = { enable = true },
@@ -124,6 +107,7 @@ require("lazy").setup({
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lua",
       "L3MON4D3/LuaSnip",
+      "simrat39/rust-tools.nvim",
       "rafamadriz/friendly-snippets",
       { "lukas-reineke/lsp-format.nvim", config = true }
     },
@@ -139,8 +123,13 @@ require("lazy").setup({
         'eslint',
         'html',
         'lua_ls',
-        'rust',
+        'rust_analyzer',
+        'dockerls',
+        'docker_compose_language_service'
       })
+
+      lsp.nvim_workspace()
+
       lsp.on_attach(function(client, bufnr)
         require("lsp-format").on_attach(client, bufnr)
       end)
@@ -151,22 +140,63 @@ require("lazy").setup({
         info = ""
       })
 
-      require("lspconfig").ltex.setup({
-        filetypes = { "markdown", "md", "html" },
-        flags = { debounce_text_changes = 300 },
-        settings = {
-          ltex = {
-            language = "en"
-          }
-        }
-      })
+      lsp.skip_server_setup({ 'rust_analyzer' })
 
-      lsp.nvim_workspace()
       lsp.setup()
       vim.diagnostic.config { virtual_text = true }
 
+      local rust_tools = require('rust-tools')
+
+      rust_tools.setup({
+        server = {
+          on_attach = function(_, bufnr)
+            vim.keymap.set('n', '<leader>ca', rust_tools.hover_actions.hover_actions, { buffer = bufnr })
+          end
+        }
+      })
+
       local cmp = require("cmp")
+      local kind_icons = {
+        Text = "",
+        Method = "󰆧",
+        Function = "󰊕",
+        Constructor = "",
+        Field = "󰇽",
+        Variable = "󰂡",
+        Class = "󰠱",
+        Interface = "",
+        Module = "",
+        Property = "󰜢",
+        Unit = "",
+        Value = "󰎠",
+        Enum = "",
+        Keyword = "󰌋",
+        Snippet = "",
+        Color = "󰏘",
+        File = "󰈙",
+        Reference = "",
+        Folder = "󰉋",
+        EnumMember = "",
+        Constant = "󰏿",
+        Struct = "",
+        Event = "",
+        Operator = "󰆕",
+        TypeParameter = "󰅲",
+      }
       cmp.setup({
+        formatting = {
+          format = function(entry, vim_item)
+            vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
+
+            vim_item.menu = ({
+              buffer = "[Buffer]",
+              nvim_lsb = "[LSP]",
+              luasnip = "[LuaSnip]",
+              nvim_lua = "[Lua]"
+            })[entry.source.name]
+            return vim_item
+          end
+        },
         mapping = {
           ['<CR>'] = cmp.mapping.confirm({ select = true })
         }

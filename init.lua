@@ -19,7 +19,7 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 350
-vim.o.background = "dark"
+
 
 vim.g.mapleader = " "
 
@@ -64,12 +64,17 @@ require("lazy").setup({
     config = true
   },
   {
-    "bluz71/vim-moonfly-colors",
-    name = "moonfly",
+    "sainnhe/gruvbox-material",
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd [[colorscheme moonfly]]
+      vim.o.background = "dark"
+      vim.g.gruvbox_material_background = "hard"
+      vim.g.gruvbox_material_better_performance = 1
+      vim.g.gruvbox_material_diagnostic_text_highlight = 1
+      vim.g.gruvbox_material_sign_column_background = "none"
+
+      vim.cmd [[colorscheme gruvbox-material]]
     end
   },
   {
@@ -267,5 +272,6 @@ require("lazy").setup({
     config = function()
       require("nvim-surround").setup({})
     end
-  }
-})
+  },
+}
+)

@@ -245,10 +245,6 @@ require("lazy").setup({
   { "windwp/nvim-autopairs",       config = true },
   { "norcalli/nvim-colorizer.lua", config = function() require("colorizer").setup() end },
   {
-    "akinsho/toggleterm.nvim",
-    config = { open_mapping = [[<leader>t]], direction = "float", insert_mappings = false }
-  },
-  {
     "kristijanhusak/vim-dadbod-ui",
     dependencies = {
       "tpope/vim-dadbod",

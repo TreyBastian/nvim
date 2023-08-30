@@ -36,6 +36,11 @@ vim.keymap.set("n", "<leader>bd", "<cmd>bd<cr>")
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+vim.keymap.set("n", "<leader>k", ":wincmd k<cr>", { silent = true })
+vim.keymap.set("n", "<leader>j", ":wincmd j<cr>", { silent = true })
+vim.keymap.set("n", "<leader>h", ":wincmd h<cr>", { silent = true })
+vim.keymap.set("n", "<leader>l", ":wincmd l<cr>", { silent = true })
+
 -- init lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then

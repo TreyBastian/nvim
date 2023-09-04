@@ -227,7 +227,7 @@ require("lazy").setup({
     "nvim-neo-tree/neo-tree.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "kyazdani42/nvim-web-devicons",
+      "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim"
     },
     keys = {
@@ -273,6 +273,16 @@ require("lazy").setup({
     config = function()
       require("nvim-surround").setup({})
     end
+  },
+  {
+    "akinsho/bufferline.nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("bufferline").setup {}
+    end,
+    options = {
+      diagnostics = "nvim_lsp",
+    }
   },
 }
 )

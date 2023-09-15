@@ -19,9 +19,10 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 350
-
-
 vim.g.mapleader = " "
+
+vim.opt.spell = true
+vim.opt.spelllang = "en_gb"
 
 vim.keymap.set("v", "<Tab>", ">gv")
 vim.keymap.set("n", "<Tab>", "v><C-\\><C-N>")
@@ -200,7 +201,7 @@ require("lazy").setup({
 
             vim_item.menu = ({
               buffer = "[Buffer]",
-              nvim_lsb = "[LSP]",
+              nvim_lsp = "[LSP]",
               luasnip = "[LuaSnip]",
               nvim_lua = "[Lua]"
             })[entry.source.name]

@@ -144,12 +144,6 @@ require("lazy").setup({
       lsp.on_attach(function(client, bufnr)
         require("lsp-format").on_attach(client, bufnr)
       end)
-      lsp.set_sign_icons({
-        error = "✘",
-        warn = "",
-        hint = "",
-        info = ""
-      })
 
       lsp.skip_server_setup({ 'rust_analyzer' })
 

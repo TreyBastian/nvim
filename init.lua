@@ -136,7 +136,8 @@ require("lazy").setup({
         'lua_ls',
         'rust_analyzer',
         'dockerls',
-        'docker_compose_language_service'
+        'docker_compose_language_service',
+        'tailwindcss',
       })
 
       lsp.nvim_workspace()
@@ -159,6 +160,31 @@ require("lazy").setup({
           end
         }
       })
+
+      require 'lspconfig'.tailwindcss.setup {
+        capabilities = Capabilities,
+        filetypes = {
+          "css",
+          "scss",
+          "sasss",
+          "postcss",
+          "html",
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+          "svelte",
+          "vue",
+          "rust",
+        },
+        init_options = {
+          userLanguages = {
+            rust = "html",
+          },
+        },
+        root_dir = require 'lspconfig'.util.root_pattern('tailwind.config.js', 'tailwind.config.ts', 'postcss.config.js',
+          'postcss.config.ts'),
+      }
 
       local cmp = require("cmp")
       local kind_icons = {

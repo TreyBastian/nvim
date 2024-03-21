@@ -25,6 +25,9 @@ o.spelllang = "en_gb"
 o.clipboard = "unnamedplus"
 vim.g.mapleader = " "
 
+-- register unknown file extensions
+vim.filetype.add({ extension = { templ = "templ" } })
+
 local k = vim.keymap
 k.set("v", "<Tab>", ">gv")
 k.set("n", "<Tab>", "v><C-\\><C-N>")
@@ -137,6 +140,7 @@ require("lazy").setup({
       { "neovim/nvim-lspconfig" },
       { "hrsh7th/cmp-nvim-lsp" },
       { "hrsh7th/nvim-cmp" },
+      { "hrsh7th/cmp-buffer" },
       { "L3MON4D3/LuaSnip" },
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
@@ -165,7 +169,10 @@ require("lazy").setup({
           "tsserver",
           "emmet_ls",
           "eslint",
+          "gopls",
+          "templ",
           "html",
+          "htmx",
           "lua_ls",
           "tailwindcss",
           "jsonls",
@@ -178,7 +185,22 @@ require("lazy").setup({
           lua_ls = function()
             local lua_opts = lsp_zero.nvim_lua_ls()
             require("lspconfig").lua_ls.setup(lua_opts)
-          end
+          end,
+          html = function()
+            require("lspconfig").html.setup({
+              filetypes = { "html", "htm", "xml", "templ" },
+            })
+          end,
+          htmx = function()
+            require("lspconfig").htmx.setup({
+              filetypes = { "html", "templ" },
+            })
+          end,
+          tailwindcss = function()
+            require("lspconfig").tailwindcss.setup({
+              filetypes = { "html", "htm", "css", "scss", "sass", "less", "postcss", "javascript", "typescript", "react", "templ" },
+            })
+          end,
         }
       })
     end

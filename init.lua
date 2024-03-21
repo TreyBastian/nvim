@@ -61,13 +61,26 @@ autocmd("BufWritePre", {
     if vim.bo.filetype == "go" then
       return
     end
-    vim.cmd [[lua vim.lsp.buf.format()]]
+    if vim.bo.filetype == "templ" then
+      local bufnr = vim.api.nvim_get_current_buf()
+      local filename = vim.api.nvim_buf_get_name(bufnr)
+      local cmd = "templ fmt " .. vim.fn.shellescape(filename)
+
+      vim.fn.jobstart(cmd, {
+        on_exit = function()
+          if vim.api.nvim_get_current_buf() == bufnr then
+            vim.cmd [[e!]]
+          end
+        end,
+      })
+    else
+      vim.cmd [[lua vim.lsp.buf.format()]]
+    end
   end
 })
 
 -- go imports --
 autocmd("BufWritePre", {
-
   pattern = "*.go",
   callback = function()
     local params = vim.lsp.util.make_range_params()
@@ -180,9 +193,6 @@ require("lazy").setup({
       { "williamboman/mason-lspconfig.nvim" },
     },
     lazy = false,
-    keys = {
-      { "<leader>bf", "<CMD>lua vim.lsp.buf.format()<CR>", mode = { "n" } }
-    },
     config = function()
       local lsp_zero = require("lsp-zero")
 

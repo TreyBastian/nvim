@@ -28,29 +28,63 @@ vim.g.mapleader = " "
 -- register unknown file extensions
 vim.filetype.add({ extension = { templ = "templ" } })
 
-local k = vim.keymap
-k.set("v", "<Tab>", ">gv")
-k.set("n", "<Tab>", "v><C-\\><C-N>")
-k.set("v", "<S-Tab>", "<gv")
-k.set("n", "<S-Tab>", "v<<C-\\><C-N>")
-k.set("i", "<S-Tab>", "<C-\\><C-N>v<<C-\\><C-N>^i")
+local set = vim.keymap.set
+set("v", "<Tab>", ">gv")
+set("n", "<Tab>", "v><C-\\><C-N>")
+set("v", "<S-Tab>", "<gv")
+set("n", "<S-Tab>", "v<<C-\\><C-N>")
+set("i", "<S-Tab>", "<C-\\><C-N>v<<C-\\><C-N>^i")
 
-k.set("n", "<leader>bn", "<CMD>bn<CR>")
-k.set("n", "<leader>bp", "<CMD>bp<CR>")
-k.set("n", "<leader>bd", "<CMD>bd<CR>")
+set("n", "<leader>bn", "<CMD>bn<CR>")
+set("n", "<leader>bp", "<CMD>bp<CR>")
+set("n", "<leader>bd", "<CMD>bd<CR>")
 
-k.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-k.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-k.set("n", "<leader>k", "<CMD>wincmd k<CR>", { silent = true })
-k.set("n", "<leader>j", "<CMD>wincmd j<CR>", { silent = true })
-k.set("n", "<leader>h", "<CMD>wincmd h<CR>", { silent = true })
-k.set("n", "<leader>l", "<CMD>wincmd l<CR>", { silent = true })
+set("n", "<leader>k", "<CMD>wincmd k<CR>", { silent = true })
+set("n", "<leader>j", "<CMD>wincmd j<CR>", { silent = true })
+set("n", "<leader>h", "<CMD>wincmd h<CR>", { silent = true })
+set("n", "<leader>l", "<CMD>wincmd l<CR>", { silent = true })
 
-k.set("x", "<leader>p", [["_dp]])
-k.set({ "n", "v" }, "<leader>y", [["+y]])
-k.set("n", "<leader>Y", [["+Y]])
-k.set({ "n", "v" }, "<leader>d", [["_d]])
+set("x", "<leader>p", [["_dp]])
+set({ "n", "v" }, "<leader>y", [["+y]])
+set("n", "<leader>Y", [["+Y]])
+set({ "n", "v" }, "<leader>d", [["_d]])
+
+-- auto commands --
+local autocmd = vim.api.nvim_create_autocmd
+-- format on save --
+autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype == "go" then
+      return
+    end
+    vim.cmd [[lua vim.lsp.buf.format()]]
+  end
+})
+
+-- go imports --
+autocmd("BufWritePre", {
+
+  pattern = "*.go",
+  callback = function()
+    local params = vim.lsp.util.make_range_params()
+    params.context = { only = { "source.organizeImports" } }
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+    for cid, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+          vim.lsp.util.apply_workspace_edit(r.edit, enc)
+        end
+      end
+    end
+    vim.lsp.buf.format({ async = false })
+  end
+})
+
 
 -- bootstrap lazy --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

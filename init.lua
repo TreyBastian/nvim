@@ -181,6 +181,15 @@ require("lazy").setup({
     }
   },
   {
+    "wintermute-cell/gitignore.nvim",
+    config = function()
+      require("gitignore")
+    end,
+    keys = {
+      { "<leader>gi", "<CMD>Gitignore<CR>", mode = { "n" } }
+    }
+  },
+  {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v3.x",
     dependencies = {

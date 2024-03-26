@@ -145,6 +145,16 @@ require("lazy").setup({
     end
   },
   {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
+    keys = { { "<leader>e", "<CMD>Neotree toggle<CR>", mode = { "n" } } },
+    config = true,
+  },
+  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = true

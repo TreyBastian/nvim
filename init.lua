@@ -115,8 +115,10 @@ o.rtp:prepend(lazypath)
 -- plugins here --
 require("lazy").setup({
   {
-    "ellisonleao/gruvbox.nvim",
-    config = function() vim.cmd [[colorscheme gruvbox]] end
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function() vim.cmd [[colorscheme tokyonight-night]] end
   },
   { "github/copilot.vim",      branch = "release" },
   {

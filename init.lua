@@ -52,54 +52,6 @@ set({ "n", "v" }, "<leader>y", [["+y]])
 set("n", "<leader>Y", [["+Y]])
 set({ "n", "v" }, "<leader>d", [["_d]])
 
--- auto commands --
-local autocmd = vim.api.nvim_create_autocmd
--- format on save --
-autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function()
-    if vim.bo.filetype == "go" then
-      return
-    end
-    if vim.bo.filetype == "templ" then
-      local bufnr = vim.api.nvim_get_current_buf()
-      local filename = vim.api.nvim_buf_get_name(bufnr)
-      local cmd = "templ fmt " .. vim.fn.shellescape(filename)
-
-      vim.fn.jobstart(cmd, {
-        on_exit = function()
-          if vim.api.nvim_get_current_buf() == bufnr then
-            vim.cmd [[e!]]
-          end
-        end,
-      })
-    else
-      vim.cmd [[lua vim.lsp.buf.format()]]
-    end
-  end
-})
-
--- go imports --
-autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function()
-    local params = vim.lsp.util.make_range_params()
-    params.context = { only = { "source.organizeImports" } }
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
-    for cid, res in pairs(result or {}) do
-      for _, r in pairs(res.result or {}) do
-        if r.edit then
-          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
-          vim.lsp.util.apply_workspace_edit(r.edit, enc)
-        end
-      end
-    end
-    vim.lsp.buf.format({ async = false })
-  end
-})
-
-
--- bootstrap lazy --
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -199,6 +151,38 @@ require("lazy").setup({
     end,
     keys = {
       { "<leader>gi", "<CMD>Gitignore<CR>", mode = { "n" } }
+    }
+  },
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "<leader>bf",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = { "n" }
+      }
+    },
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylelua" },
+        javascript = { "prettier" },
+        javascriptreact = { "prettier" },
+        typescript = { "prettier" },
+        typescriptreact = { "prettier" },
+        markdown = { "prettier" },
+        mdx = { "prettier" },
+        json = { "prettier" },
+        css = { "prettier" },
+        html = { "prettier" },
+      },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      }
     }
   },
   {

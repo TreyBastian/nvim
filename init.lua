@@ -247,7 +247,7 @@ require("lazy").setup({
           end,
           tailwindcss = function()
             require("lspconfig").tailwindcss.setup({
-              filetypes = { "html", "htm", "css", "scss", "sass", "less", "postcss", "javascript", "typescript", "react", "templ" },
+              filetypes = { "html", "htm", "css", "scss", "sass", "less", "postcss", "javascript", "typescript", "react", "templ", "typescriptreact", "javascriptreact" },
             })
           end,
         }

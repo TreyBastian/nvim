@@ -72,6 +72,18 @@ require("lazy").setup({
     priority = 1000,
     config = function() vim.cmd [[colorscheme tokyonight-night]] end
   },
+  {
+    "f-person/auto-dark-mode.nvim",
+    config = {
+      update_interval = 1000,
+      set_dark_mode = function()
+        vim.api.nvim_set_option("background", "dark")
+      end,
+      set_light_mode = function()
+        vim.api.nvim_set_option("background", "light")
+      end,
+    },
+  },
   { "github/copilot.vim",      branch = "release" },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -178,12 +190,34 @@ require("lazy").setup({
         json = { "prettier" },
         css = { "prettier" },
         html = { "prettier" },
+        templ = { "templ" },
+        go = { "goimports", "gofmt" },
       },
       format_on_save = {
         timeout_ms = 500,
         lsp_fallback = true,
       }
     }
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio",
+    },
+  },
+  {
+    "NvChad/nvim-colorizer.lua",
+    opts = {
+      user_default_options = {
+        mode = "virtualtext",
+        names = false,
+      },
+      filetypes = {
+        "*",
+        css = { names = true, css = true, css_fn = true },
+      },
+    },
   },
   {
     "VonHeikemen/lsp-zero.nvim",
@@ -231,6 +265,7 @@ require("lazy").setup({
         },
         handlers = {
           lsp_zero.default_setup,
+          jdtls = lsp_zero.noop,
           lua_ls = function()
             local lua_opts = lsp_zero.nvim_lua_ls()
             require("lspconfig").lua_ls.setup(lua_opts)

@@ -24,6 +24,7 @@ o.spell = true
 o.spelllang = "en_gb"
 o.clipboard = "unnamedplus"
 vim.g.mapleader = " "
+vim.g.maplocalleader = ";"
 
 -- register unknown file extensions
 vim.filetype.add({ extension = { templ = "templ" } })
@@ -42,15 +43,21 @@ set("n", "<leader>bd", "<CMD>bd<CR>")
 set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-set("n", "<leader>k", "<CMD>wincmd k<CR>", { silent = true })
-set("n", "<leader>j", "<CMD>wincmd j<CR>", { silent = true })
-set("n", "<leader>h", "<CMD>wincmd h<CR>", { silent = true })
-set("n", "<leader>l", "<CMD>wincmd l<CR>", { silent = true })
+set("n", "<leader>wk", "<CMD>wincmd k<CR>", { silent = true })
+set("n", "<leader>wj", "<CMD>wincmd j<CR>", { silent = true })
+set("n", "<leader>wh", "<CMD>wincmd h<CR>", { silent = true })
+set("n", "<leader>wl", "<CMD>wincmd l<CR>", { silent = true })
+set("n", "<leader>wr", "<CMD>wincmd r<CR>", { silent = true })
+set("n", "<leader>wJ", "<CMD>wincmd J<CR>", { silent = true })
+set("n", "<leader>wH", "<CMD>wincmd H<CR>", { silent = true })
+set("n", "<leader>ww", "<CMD>wincmd w<CR>", { silent = true })
 
 set("x", "<leader>p", [["_dp]])
 set({ "n", "v" }, "<leader>y", [["+y]])
 set("n", "<leader>Y", [["+Y]])
 set({ "n", "v" }, "<leader>d", [["_d]])
+
+set("t", "<Esc>", "<C-\\><C-n>")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -67,10 +74,10 @@ o.rtp:prepend(lazypath)
 -- plugins here --
 require("lazy").setup({
   {
-    "folke/tokyonight.nvim",
+    "sainnhe/gruvbox-material",
     lazy = false,
     priority = 1000,
-    config = function() vim.cmd [[colorscheme tokyonight-night]] end
+    config = function() vim.cmd [[colorscheme gruvbox-material]] end
   },
   {
     "f-person/auto-dark-mode.nvim",
@@ -192,6 +199,8 @@ require("lazy").setup({
         html = { "prettier" },
         templ = { "templ" },
         go = { "goimports", "gofmt" },
+        clojure = { "cljstyle" },
+        clojurescript = { "cljstyle" },
       },
       format_on_save = {
         timeout_ms = 500,
@@ -219,6 +228,44 @@ require("lazy").setup({
       },
     },
   },
+  {
+    "julienvincent/nvim-paredit",
+    config = function()
+      require("nvim-paredit").setup()
+    end,
+  },
+  {
+    "Olical/conjure",
+    ft = { "clojure", "clojurescript", "fennel" },
+    dependencies = {
+      {
+        "PaterJason/cmp-conjure",
+        config = function()
+          local cmp = require("cmp")
+          local config = cmp.get_config()
+          table.insert(config.sources, {
+            name = "buffer",
+            option = {
+              sources = {
+                { name = "conjure" }
+              },
+            },
+          })
+          cmp.setup(config)
+        end,
+      },
+    },
+    config = function(_, opts)
+      require("conjure.main").main()
+      require("conjure.mapping")["on-filetype"]()
+    end,
+    init = function()
+      vim.g["conjure£debug"] = true
+    end,
+  },
+  { "tpope/vim-dispatch" },
+  { "clojure-vim/vim-jack-in" },
+  { 'radenling/vim-dispatch-neovim' },
   {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v3.x",

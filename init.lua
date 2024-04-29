@@ -1,3 +1,9 @@
+if vim.fn.exists('g:os') == 0 then
+  vim.g.is_windows = vim.fn.has("win64") or vim.fn.has("win32") or vi.fn.has("win16")
+else
+  vim.g.is_windows = false
+end
+
 local o = vim.opt
 o.nu = true
 o.relativenumber = true
@@ -12,7 +18,6 @@ o.showbreak = string.rep(" ", 3)
 o.linebreak = true
 o.swapfile = false
 o.backup = false
-o.undodir = os.getenv("HOME") .. "/.local/share/nvim/undodir"
 o.undofile = true
 o.hlsearch = false
 o.incsearch = true
@@ -25,6 +30,12 @@ o.spelllang = "en_gb"
 o.clipboard = "unnamedplus"
 vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
+
+if vim.g.is_windows == false then
+  o.undodir = os.getenv("HOME") .. "/.local/share/nvim/undodir"
+else
+  o.undodir = os.getenv("userprofile") .. "/AppData/local/nvim/undodir"
+end
 
 -- register unknown file extensions
 vim.filetype.add({ extension = { templ = "templ" } })
@@ -302,7 +313,7 @@ require("lazy").setup({
           "gopls",
           "templ",
           "html",
-          "htmx",
+          -- "htmx",
           "lua_ls",
           "tailwindcss",
           "jsonls",
@@ -322,11 +333,11 @@ require("lazy").setup({
               filetypes = { "html", "htm", "xml", "templ" },
             })
           end,
-          htmx = function()
-            require("lspconfig").htmx.setup({
-              filetypes = { "html", "templ" },
-            })
-          end,
+          -- htmx = function()
+          --   require("lspconfig").htmx.setup({
+          --     filetypes = { "html", "templ" },
+          --   })
+          -- end,
           tailwindcss = function()
             require("lspconfig").tailwindcss.setup({
               filetypes = { "html", "htm", "css", "scss", "sass", "less", "postcss", "javascript", "typescript", "react", "templ", "typescriptreact", "javascriptreact" },

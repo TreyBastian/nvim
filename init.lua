@@ -276,7 +276,6 @@ require("lazy").setup({
   },
   { "tpope/vim-dispatch" },
   { "clojure-vim/vim-jack-in" },
-  { 'radenling/vim-dispatch-neovim' },
   {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v3.x",

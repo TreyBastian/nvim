@@ -1,9 +1,3 @@
-if vim.fn.exists('g:os') == 0 then
-  vim.g.is_windows = vim.fn.has("win64") or vim.fn.has("win32") or vi.fn.has("win16")
-else
-  vim.g.is_windows = false
-end
-
 local o = vim.opt
 o.nu = true
 o.relativenumber = true
@@ -28,14 +22,9 @@ o.updatetime = 50
 o.spell = true
 o.spelllang = "en_gb"
 o.clipboard = "unnamedplus"
+o.undodir = vim.fn.stdpath("data") .. "/undodir"
 vim.g.mapleader = " "
 vim.g.maplocalleader = ";"
-
-if vim.g.is_windows == false then
-  o.undodir = os.getenv("HOME") .. "/.local/share/nvim/undodir"
-else
-  o.undodir = os.getenv("userprofile") .. "/AppData/local/nvim/undodir"
-end
 
 -- register unknown file extensions
 vim.filetype.add({ extension = { templ = "templ" } })

@@ -30,8 +30,12 @@ local function clj_string()
   -- string = string .. " --interactive"
   --
   local string =
-  "clj -Sdeps '{:deps {nrepl/nrepl {:mvn/version \"\"\"1.0.0\"\"\"} cider/cider-nrepl {:mvn/version \"\"\"0.42.1\"\"\"}}}' --main nrepl.cmdline --middleware '[\"cider.nrepl/cider-middleware\"]' --interactive"
-  return vim.fn.shellescape(string)
+      "clj -Sdeps '{:deps {nrepl/nrepl {:mvn/version " ..
+      version_escape("1.0.0") ..
+      "} cider/cider-nrepl {:mvn/version" ..
+      version_escape("RELEASE") ..
+      "}}}' --main nrepl.cmdline --middleware '[\"cider.nrepl/cider-middleware\"]' --interactive"
+  return string
 end
 
 local execution_functions = {
@@ -48,9 +52,6 @@ local function execute(execution_string)
   if options.win_use_powershell == true and is_windows == 1 then
     start_string = start_string .. 'powershell '
   end
-
-  execution_string = execution_string:sub(1, -2)
-  execution_string = execution_string:sub(2)
 
   print(start_string .. execution_string)
   vim.cmd(start_string .. execution_string)

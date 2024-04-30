@@ -237,6 +237,9 @@ require("lazy").setup({
   {
     "Olical/conjure",
     ft = { "clojure", "clojurescript", "fennel" },
+    keys = {
+      { "<localleader>rC", "<cmd>ConjureConnect<CR>", mode = { "n" } },
+    },
     dependencies = {
       {
         "PaterJason/cmp-conjure",
@@ -263,8 +266,6 @@ require("lazy").setup({
       vim.g["conjure£debug"] = true
     end,
   },
-  { "tpope/vim-dispatch" },
-  { "clojure-vim/vim-jack-in" },
   {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v3.x",

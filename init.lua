@@ -59,6 +59,10 @@ set({ "n", "v" }, "<leader>d", [["_d]])
 
 set("t", "<Esc>", "<C-\\><C-n>")
 
+local function is_windows()
+  return vim.fn.has("win64") == 1 or vim.fn.has("win32") == 1 or vim.fn.has("win16") == 1
+end
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -78,6 +82,14 @@ require("lazy").setup({
     lazy = false,
     priority = 1000,
     config = function() vim.cmd [[colorscheme gruvbox-material]] end
+  },
+  {
+    "TreyBastian/nvim-jack-in",
+    opts = {
+      force_powershell = is_windows(),
+      location = "background",
+    },
+    config = true
   },
   {
     "f-person/auto-dark-mode.nvim",

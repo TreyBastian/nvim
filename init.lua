@@ -99,7 +99,7 @@ require("lazy").setup({
       "windwp/nvim-ts-autotag",
       "HiPhish/rainbow-delimiters.nvim",
     },
-    build = ":TSUPdate",
+    build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup {
         sync_install = false,
@@ -202,11 +202,7 @@ require("lazy").setup({
           "jsonls",
           "dockerls",
           "bashls",
-          "checkmake",
           "phpactor",
-          "prettier",
-          "pint",
-          "blade-formatter",
         },
         handlers = {
           lsp_zero.default_setup,

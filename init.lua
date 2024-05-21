@@ -99,22 +99,40 @@ require("lazy").setup({
       "windwp/nvim-ts-autotag",
       "HiPhish/rainbow-delimiters.nvim",
     },
+    main = 'nvim-treesitter.configs',
     build = ":TSUpdate",
-    config = function()
-      require("nvim-treesitter.configs").setup {
-        sync_install = false,
-        auto_install = true,
-        highlight = {
-          enable = true,
+    opts = {
+      sync_install = false,
+      auto_install = true,
+      highlight = {
+        enable = true,
+      },
+      autotag = {
+        enable = true,
+      },
+      rainbow = {
+        enable = true,
+        extended_mode = true,
+      },
+
+    },
+    config = function(_, opts)
+      require('nvim-treesitter.configs').setup(opts)
+
+      local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+      parser_config.blade = {
+        install_info = {
+          url = "https://github.com/EmranMR/tree-sitter-blade",
+          files = { "src/parser.c" },
+          branch = "main",
         },
-        autotag = {
-          enable = true,
-        },
-        rainbow = {
-          enable = true,
-          extended_mode = true,
-        },
+        filetype = "blade"
       }
+      vim.filetype.add({
+        pattern = {
+          ['.*%.blade%.php'] = 'blade',
+        },
+      })
     end,
   },
   {
@@ -150,7 +168,8 @@ require("lazy").setup({
         json = { "prettier" },
         css = { "prettier" },
         go = { "goimports", "gofmt" },
-        php = { "blade-formatter", "pint" },
+        php = { "pint" },
+        blade = { "blade-formatter", "pint" },
       },
       format_on_save = {
         timeout_ms = 500,
@@ -206,18 +225,23 @@ require("lazy").setup({
         },
         handlers = {
           lsp_zero.default_setup,
+          phpactor = function()
+            require("lspconfig").phpactor.setup({
+              filetypes = { "php", "blade" }
+            })
+          end,
           lua_ls = function()
             local lua_opts = lsp_zero.nvim_lua_ls()
             require("lspconfig").lua_ls.setup(lua_opts)
           end,
           html = function()
             require("lspconfig").html.setup({
-              filetypes = { "html", "htm", "xml", "php" },
+              filetypes = { "html", "htm", "xml", "php", "blade", },
             })
           end,
           tailwindcss = function()
             require("lspconfig").tailwindcss.setup({
-              filetypes = { "html", "htm", "css", "postcss", "javascript", "javascriptreact", "typescript", "typescriptreact", "react", "php" }
+              filetypes = { "html", "htm", "css", "postcss", "javascript", "javascriptreact", "typescript", "typescriptreact", "react", "php", "blade", }
             })
           end
         }

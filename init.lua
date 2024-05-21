@@ -57,6 +57,7 @@ o.rtp:prepend(lazypath)
 require("lazy").setup({
   { "jessarcher/vim-heritage" },
   { "tpope/vim-fugitive" },
+  { "tpope/vim-eunuch" },
   { "lewis6991/gitsigns.nvim", config = true },
   {
     "sainnhe/gruvbox-material",

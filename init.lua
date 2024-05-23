@@ -190,7 +190,7 @@ require("lazy").setup({
           "jsonls",
           "dockerls",
           "bashls",
-          "phpactor",
+          "intelephense",
         },
         handlers = {
           lsp_zero.default_setup,

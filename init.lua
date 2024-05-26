@@ -205,7 +205,18 @@ require("lazy").setup({
           end,
           tailwindcss = function()
             require("lspconfig").tailwindcss.setup({
-              filetypes = { "html", "htm", "css", "postcss", "javascript", "javascriptreact", "typescript", "typescriptreact", "react", "php", }
+              filetypes = {
+                "html",
+                "htm",
+                "css",
+                "postcss",
+                "javascript",
+                "javascriptreact",
+                "typescript",
+                "typescriptreact",
+                "react",
+                "php",
+              }
             })
           end
         }

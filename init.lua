@@ -66,14 +66,6 @@ require("lazy").setup({
     config = function() vim.cmd [[colorscheme gruvbox-material]] end
   },
   {
-    "terrortylor/nvim-comment",
-    keys = {
-      { "<leader>\\", "<CMD>CommentToggle<CR>j",        mode = { "n" } },
-      { "<leader>\\", "<CMD>CommentToggle<CR>gv<esc>j", mode = { "v" } },
-    },
-    config = function() require("nvim_comment").setup() end,
-  },
-  {
     "f-person/auto-dark-mode.nvim",
     opts = {
       update_interval = 1000,

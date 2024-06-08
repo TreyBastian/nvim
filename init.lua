@@ -1,5 +1,6 @@
 local o = vim.opt
 o.nu = true
+o.relativenumber = true
 o.tabstop = 2
 o.softtabstop = 2
 o.shiftwidth = 2
@@ -40,6 +41,9 @@ set("n", "<leader>bp", "<CMD>bp<CR>")
 set("n", "<leader>bd", "<CMD>bd<CR>")
 
 set("t", "<Esc>", "<C-\\><C-N>")
+
+-- register file extensions
+vim.filetype.add({ extension = { templ = "templ" } })
 
 -- begin our packages
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -129,7 +133,11 @@ require("lazy").setup({
         typescriptreact = { "prettier" },
         json = { "prettier" },
         css = { "prettier" },
+        markdown = { "prettier" },
+        mdx = { "prettier" },
+        html = { "prettier" },
         go = { "goimports", "gofmt" },
+        templ = { "templ" },
         php = { "blade-formatter", "pint", },
       },
       format_on_save = {
@@ -183,6 +191,8 @@ require("lazy").setup({
           "dockerls",
           "bashls",
           "intelephense",
+          "yamlls",
+          "templ",
         },
         handlers = {
           lsp_zero.default_setup,
@@ -192,7 +202,7 @@ require("lazy").setup({
           end,
           html = function()
             require("lspconfig").html.setup({
-              filetypes = { "html", "htm", "xml", "php" },
+              filetypes = { "html", "htm", "xml", "php", "templ", },
             })
           end,
           tailwindcss = function()
@@ -208,11 +218,12 @@ require("lazy").setup({
                 "typescriptreact",
                 "react",
                 "php",
+                "templ",
               }
             })
-          end
-        }
+          end,
+        },
       })
     end,
-  }
+  },
 })

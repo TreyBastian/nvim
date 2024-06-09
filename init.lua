@@ -43,7 +43,12 @@ set("n", "<leader>bd", "<CMD>bd<CR>")
 set("t", "<Esc>", "<C-\\><C-N>")
 
 -- register file extensions
-vim.filetype.add({ extension = { templ = "templ" } })
+vim.filetype.add({
+  extension = { templ = "templ" },
+  pattern = {
+    [".*%blade%.php"] = "php",
+  }
+})
 
 -- begin our packages
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -88,6 +93,25 @@ require("lazy").setup({
       { "<leader>fg",       "<CMD>Telescope git_files<CR>",  mode = { "n" } },
       { "<leader><leader>", "<CMD>Telescope live_grep<CR>",  mode = { "n" } },
     },
+  },
+  {
+    "adalessa/laravel.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "tpope/vim-dotenv",
+      "MunifTanjim/nui.nvim",
+      "nvimtools/none-ls.nvim",
+    },
+    cmd = { "Sail", "Artisan", "Composer", "Npm", "Yarn", "Laravel", },
+    keys = {
+      { "<leader>la", "<CMD>Laravel artisan<CR>", mode = { "n" } },
+    },
+    event = { "VeryLazy" },
+    config = function()
+      require("laravel").setup({
+        lsp_server = "intelephense",
+      })
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter",

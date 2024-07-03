@@ -45,9 +45,6 @@ set("t", "<Esc>", "<C-\\><C-N>")
 -- register file extensions
 vim.filetype.add({
   extension = { templ = "templ" },
-  pattern = {
-    [".*%blade%.php"] = "php",
-  }
 })
 
 -- begin our packages
@@ -68,6 +65,10 @@ require("lazy").setup({
   { "tpope/vim-fugitive" },
   { "tpope/vim-eunuch" },
   { "lewis6991/gitsigns.nvim", config = true },
+  {
+    "ricardoramirezr/blade-nav.nvim",
+    ft = { "blade", "php" },
+  },
   {
     "sainnhe/gruvbox-material",
     lazy = false,
@@ -125,6 +126,7 @@ require("lazy").setup({
     opts = {
       sync_install = false,
       auto_install = true,
+      ensure_installed = { "php_only", "blade", "php" },
       highlight = {
         enable = true,
       },
@@ -138,6 +140,15 @@ require("lazy").setup({
 
     },
     config = function(_, opts)
+      require("nvim-treesitter.parsers").get_parser_configs().blade = {
+        install_info = {
+          url = "https://github.com/EmranMR/tree-sitter-blade",
+          files = { "src/parser.c" },
+          branch = "main",
+        },
+        filetype = "blade",
+      }
+
       require('nvim-treesitter.configs').setup(opts)
     end,
   },
@@ -162,7 +173,8 @@ require("lazy").setup({
         html = { "prettier" },
         go = { "goimports", "gofmt" },
         templ = { "templ" },
-        php = { "blade-formatter", "pint", },
+        php = { "pint", },
+        blade = { "pint" },
       },
       format_on_save = {
         timeout_ms = 500,
@@ -459,13 +471,23 @@ require("lazy").setup({
         handlers = {
           lsp_zero.default_setup,
           jdtls = lsp_zero.noop,
+          intelephense = function()
+            require("lspconfig").intelephense.setup({
+              filetypes = { "php", "blade" },
+            })
+          end,
           lua_ls = function()
             local lua_opts = lsp_zero.nvim_lua_ls()
             require("lspconfig").lua_ls.setup(lua_opts)
           end,
           html = function()
             require("lspconfig").html.setup({
-              filetypes = { "html", "htm", "xml", "php", "templ", },
+              filetypes = { "html", "htm", "xml", "php", "templ", "blade", },
+            })
+          end,
+          emmet_ls = function()
+            require("lspconfig").emmet_ls.setup({
+              filetypes = { "html", "htm", "xml", "php", "templ", "blade", },
             })
           end,
           tailwindcss = function()
@@ -482,6 +504,7 @@ require("lazy").setup({
                 "react",
                 "php",
                 "templ",
+                "blade",
               }
             })
           end,

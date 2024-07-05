@@ -174,7 +174,7 @@ require("lazy").setup({
         go = { "goimports", "gofmt" },
         templ = { "templ" },
         php = { "pint", },
-        blade = { "pint" },
+        blade = { "blade-formatter", "pint" },
       },
       format_on_save = {
         timeout_ms = 500,

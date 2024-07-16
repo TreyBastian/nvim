@@ -45,6 +45,7 @@ set("t", "<Esc>", "<C-\\><C-N>")
 -- register file extensions
 vim.filetype.add({
   extension = { templ = "templ" },
+  pattern = { ['.*%.blade%.php'] = 'php', },
 })
 
 -- begin our packages

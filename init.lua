@@ -45,6 +45,7 @@ set("t", "<Esc>", "<C-\\><C-N>")
 -- register file extensions
 vim.filetype.add({
   extension = { templ = "templ" },
+  -- remove once intelephense is fixed
   pattern = { ['.*%.blade%.php'] = 'php', },
 })
 

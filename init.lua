@@ -87,6 +87,15 @@ require("lazy").setup({
     config = true,
   },
   {
+    "akinsho/flutter-tools.nvim",
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "stevearc/dressing.nvim",
+    },
+    config = true,
+  },
+  {
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
     dependencies = { { "nvim-lua/plenary.nvim" } },
@@ -451,6 +460,12 @@ require("lazy").setup({
       })
 
       require('luasnip.loaders.from_vscode').lazy_load()
+
+      require('flutter-tools').setup({
+        lsp = {
+          capabilities = lsp_zero.get_capabilities()
+        }
+      })
 
       require("mason").setup({})
       require("mason-lspconfig").setup({

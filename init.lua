@@ -42,6 +42,7 @@ set("n", "<leader>bd", "<CMD>bd<CR>")
 
 set("t", "<Esc>", "<C-\\><C-N>")
 
+set("n", "<leader>u", "<CMD>UndotreeToggle<CR>")
 -- register file extensions
 vim.filetype.add({
   extension = { templ = "templ" },
@@ -70,6 +71,10 @@ require("lazy").setup({
   {
     "ricardoramirezr/blade-nav.nvim",
     ft = { "blade", "php" },
+  },
+  {
+    "mbbill/undotree",
+    lazy = false,
   },
   {
     "sainnhe/gruvbox-material",

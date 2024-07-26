@@ -189,7 +189,7 @@ require("lazy").setup({
         html = { "prettier" },
         go = { "goimports", "gofmt" },
         templ = { "templ" },
-        php = { "blade-formatter", "pint", },
+        php = { "pint", },
         blade = { "blade-formatter", "pint" },
       },
       format_on_save = {

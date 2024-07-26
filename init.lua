@@ -92,6 +92,11 @@ require("lazy").setup({
     config = true,
   },
   {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+  },
+  {
     "akinsho/flutter-tools.nvim",
     lazy = false,
     dependencies = {

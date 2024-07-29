@@ -42,7 +42,6 @@ set("n", "<leader>bd", "<CMD>bd<CR>")
 
 set("t", "<Esc>", "<C-\\><C-N>")
 
-set("n", "<leader>u", "<CMD>UndotreeToggle<CR>")
 -- register file extensions
 vim.filetype.add({
   extension = { templ = "templ" },
@@ -52,7 +51,7 @@ vim.filetype.add({
 
 -- begin our packages
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -64,6 +63,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 o.rtp:prepend(lazypath)
 require("lazy").setup({
+  checker = { enabled = true },
   { "jessarcher/vim-heritage" },
   { "tpope/vim-fugitive" },
   { "tpope/vim-eunuch" },
@@ -75,6 +75,7 @@ require("lazy").setup({
   {
     "mbbill/undotree",
     lazy = false,
+    keys = { { "<leader>u", "<CMD>UndotreeToggle<CR>", { mode = "n" } } },
   },
   {
     "sainnhe/gruvbox-material",

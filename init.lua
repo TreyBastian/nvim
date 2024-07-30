@@ -111,10 +111,11 @@ require("lazy").setup({
     branch = "0.1.x",
     dependencies = { { "nvim-lua/plenary.nvim" } },
     keys = {
-      { "<leader>ff",       "<CMD>Telescope find_files<CR>", mode = { "n" } },
-      { "<leader>fb",       "<CMD>Telescope buffers<CR>",    mode = { "n" } },
-      { "<leader>fg",       "<CMD>Telescope git_files<CR>",  mode = { "n" } },
-      { "<leader><leader>", "<CMD>Telescope live_grep<CR>",  mode = { "n" } },
+      { "<leader>ff",       "<CMD>Telescope find_files<CR>",                                   mode = { "n" } },
+      { "<leader>ft",       "<CMD>lua require('telescope').extensions.flutter.commands()<CR>", mode = { "n" } },
+      { "<leader>fb",       "<CMD>Telescope buffers<CR>",                                      mode = { "n" } },
+      { "<leader>fg",       "<CMD>Telescope git_files<CR>",                                    mode = { "n" } },
+      { "<leader><leader>", "<CMD>Telescope live_grep<CR>",                                    mode = { "n" } },
     },
   },
   {

@@ -41,6 +41,9 @@ set("n", "<leader>bp", "<CMD>bp<CR>")
 set("n", "<leader>bd", "<CMD>bd<CR>")
 
 set("t", "<Esc>", "<C-\\><C-N>")
+set("v", "p", '"_dP')
+set('i', ';;', '<Esc>A;<Esc>')
+set('i', ',,', '<Esc>A,<Esc>')
 
 -- register file extensions
 vim.filetype.add({
